@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasp:TopicConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tasp="http://www.ibm.com/tivoli/netcool/tasp">
+  <name>SDGEN</name>
+  <DataSourceInstance>
+    <name>ITM</name>
+    <model>
+      <name>ITM</name>
+      <groups>
+        <name>ResptimeGroup</name>
+        <timestampKey>
+          <name>Timestamp</name>
+          <enabled>true</enabled>
+          <dataType>Number</dataType>
+          <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.0">
+            <expression>
+              <expression></expression>
+            </expression>
+          </mapping>
+        </timestampKey>
+        <resourceKey>
+          <name>ResourceKey</name>
+          <enabled>true</enabled>
+          <dataType>String</dataType>
+          <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.1">
+            <expression>
+              <expression></expression>
+            </expression>
+          </mapping>
+        </resourceKey>
+        <attributes>
+          <name>Node</name>
+          <enabled>true</enabled>
+          <dataType>String</dataType>
+          <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.1">
+            <expression>
+              <expression></expression>
+            </expression>
+          </mapping>
+        </attributes>
+        <attributes>
+          <name>dataSourceType</name>
+          <dataType>String</dataType>
+          <mapping>
+            <expression>
+              <expression>'ITM'</expression>
+            </expression>
+          </mapping>
+        </attributes>
+% for (1..$$NumberOfMetrics) {
+	% my $entSource = $_ + 1;
+    <metrics>
+  <name>Met<%=$_%></name>
+<enabled>true</enabled>
+<dataType>Number</dataType>
+        <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.<%=$entSource%>">
+          <expression>
+            <expression></expression>
+          </expression>
+        </mapping>
+        <timeAggrType>Avg</timeAggrType>
+      </metrics>
+% }
+      </groups>
+      <sources>
+        <name>RespTime</name>
+        <DataEntitySource>
+          <name>timestamp</name>
+          <dataType>Number</dataType>
+        </DataEntitySource>
+        <DataEntitySource>
+          <name>Resource</name>
+          <dataType>String</dataType>
+        </DataEntitySource>
+% for (1..$$NumberOfMetrics) {
+   <DataEntitySource>
+     <name>met<%=$_%></name>
+      <dataType>Number</dataType>
+    </DataEntitySource>
+%}
+      </sources>
+      <filters/>
+    </model>
+    <config xsi:type="tasp:FileSystemConfig" timeFormat="1yyMMddHHmmssSSS">
+      <name>ITM</name>
+      <path>/tmp/sdgen.workdir/data</path>
+      <pattern>([a-zA-Z]\w*)_(\d{16})_(\d{16}).*\.csv</pattern>
+    </config>
+  </DataSourceInstance>
+</tasp:TopicConfig>	

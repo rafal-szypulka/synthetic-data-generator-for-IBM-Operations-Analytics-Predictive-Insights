@@ -1,0 +1,461 @@
+% title 'synthetic data generator for PI';
+
+
+<head>
+  <meta charset="utf-8">
+  <title><%= title %></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  %= stylesheet '/css/jquery-ui.min.css'  
+  %= stylesheet '/css/bootstrap.min.css'
+  %= stylesheet '/css/fotorama.css'
+
+<style>
+  
+  .currentPath {
+    stroke-width: 2px;
+  }
+
+  .x.axis {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .page-header {
+    padding-top: 0px;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+  }
+
+ .tick line{
+    opacity: 0.2;
+  }
+  
+  #canvas { 
+     font: 12px Arial;
+  }
+
+
+  pre {
+    font-family: "Courier New"
+                    Courier
+                    monospace;
+    margin-top: 20px;
+	text-align: center;	
+ }
+
+  .textbox { 
+    background: white; 
+    border: 1px double #DDD; 
+    border-radius: 5px; 
+    box-shadow: 0 0 5px #333; 
+    color: #666; 
+    outline: none; 
+	font: 15px;
+  }
+  
+.dygraph-legend {
+
+        padding: 4px;
+        border: 1px solid #000;
+        border-radius: 10px;
+        box-shadow: 4px 4px 4px #888;
+        pointer-events: none;
+      }
+
+th, td {
+    padding: 15px;
+}
+.label {
+  fill: #C4C4C4;
+  font: 500 20px "Helvetica Neue";
+}
+
+.popover{
+    max-width: 60%;
+}
+ 
+ a.help {color: "blue"; text-decoration: underline;}
+ a.help:visited {color: "blue"; text-decoration: underline;}
+ a.help:hover {color: #FFCC00}
+ a.help:active {color: #FF00CC}
+ 
+ #accordion-resizer {
+   padding: 10px;
+   width: 350px;
+   height: 300px;
+ }
+ /* Form Validation */
+ span.error {
+ font: bold 11px Arial, sans-serif;
+ color: red;
+}
+
+table#example {
+    border-collapse: collapse;  text-align: left; width: 100%; 
+}
+#example tr {
+    border-top: 1px solid #fff;
+	font-family: arial, sans-serif;
+	font-size: 13px;
+}
+#example tr:hover {
+    background-color: #E1EEF4;
+}
+
+#example td {
+    padding: 3px 5px; border-bottom: 1px solid #E1EEF4;font-weight: normal;
+}
+#example td:hover {
+    cursor: pointer;
+}
+#content1,#content2,#screenshots_content1,#screenshots_content2, { display: none; width: 100%; }
+</style>
+
+  <%= content %>
+  %= javascript '/js/libs/jquery-1.12.0.min.js'
+  %= javascript '/js/libs/d3.v3.min.js'
+  %= javascript '/js/libs/dygraph-combined.js'
+  %= javascript '/js/rs_tsmk.js'
+  %= javascript '/js/libs/jquery-ui.min.js'
+  %= javascript '/js/libs/spin.min.js'  
+  %= javascript '/js/libs/bootstrap.min.js'
+  %= javascript '/js/libs/moment.min.js'
+  %= javascript '/js/libs/fotorama.js'
+
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+	<table width="100%">
+	  <tr>
+	    <td align="left">  <a class="btn btn-default" href="#" role="button" id="reset">Clear chart</a></td>
+	    <td align="right">synthetic data generator for IBM Operations Analytics Predictive Insights v0.2 (beta)</td>
+	  </tr>
+	</table>
+
+ </div>	
+     <!-- CANVAS -->
+      <div class="row">
+	    <div class = "col-md-10 col-md-offset-1" id="canvas">
+	    </div>
+      </div>
+ <div class="row">
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Examples</a></li>
+    <li><a href="#tabs-2">Preview data</a></li>
+    <li><a href="#tabs-3">Preview chart</a></li>
+	<li><a href="#tabs-4">Download</a></li>
+	<li><a href="#tabs-6">Options</a></li>
+	<li><a href="#tabs-7">Load/Save</a></li>
+	<li><a href="#tabs-5">Help</a></li>
+	<li><a href="#tabs-8">About</a></li>
+  </ul>
+  <div id="tabs-1">
+<table id="example">
+<tr id="example2">
+    <td>Example 1
+	</td>
+    <td>
+	<b>Resource:</b> eolas:lz<br>
+	<b>Sampling:</b> 5 min<br>
+	<b>Time range:</b> 19 days<br>
+	<b>IOAPI result:</b> Out-of-bound <img src="css/images/icon_tsaa_normalbounds.jpg">, flat line <img src="css/images/icon_tsaa_variantandflaline.jpg"> anomalies and causaly related <img src="css/images/icon_tsaa_granger.jpg">metrics. <br>
+	<b>Metrics:</b> 6<br><br>
+	<a href="#" class="description"><span id="accordionIcon">►</span>Screenshots</a>
+	<div style="display:none"><br>
+	<div class="fotorama" data-width="95%"
+	     data-ratio="800/400"
+		 data-nav="thumbs" align="center">
+	  <img src="css/images/example1-0.jpg">
+	  <img src="css/images/example1-1.jpg">
+	  <img src="css/images/example1-2.jpg">
+	  <img src="css/images/example1-3.jpg">
+	  <img src="css/images/example1-4.jpg">
+	</div>
+	</div>
+	<br>
+	<a href="#" class="description"><span id="accordionIcon">►</span>Description of simulated metrics and anomalies</a>
+	<div style="display:none">
+	<br>
+	<b>Metrics Expressions:</b><br>
+	<li>met1: (r(10) > 8)?(y + r(2)):(y) - 80% of samples follow the original line y, 20% are randomized (y +r(2))
+	<li>met2: g(20) - the same as y delayed 20 minutes
+	<li>met3: y-10-r(10) - original y values - 10 - rand(10)
+	<li>met4: y*(2+r(1)) - original y values multiplied by (2+rand(1)) 
+	<li>met5: y+30+r(3) - original y values + 30 + rand(3)
+	<li>met6: (r(10)>5)?(m+1):(m-1) - random walk not related to original y values. m means previous value of metric, every next sample is +1 or -1 of previous value
+	<br><br><b>Anomaly period 1:</b><br>
+	<li>met1: (r(10) > 8)?(y - 20 - r(2)):(y-20) - 80% of samples are equal to original y value - 20, 20% are additionally randomized - rand(2)
+	<li>met2: g(50) - the same as y delayed 50 minutes
+	<li>met3: y+10+r(3) - original y values + 10 + rand(3)
+	<li>met4: y+50+r(3) - original y values + 50 + rand(3)
+	<li>met5: y+r(3) - original y values + rand(3)
+	<li>met6: 50 - flat line 50
+	<br><br><b>Anomaly period 2:</b><br>
+	<li>met1: (r(10) > 8)?(y + 20 - r(2)):(y+20)- 80% of samples are equal to original y value + 20, 20% are additionally randomized - rand(2)
+	<li>met2: g(20) - the same as y delayed 20 minutes
+	<li>met3: y-10+r(3) - original y values - 10 - rand(3)
+	<li>met4: y+50+r(3) - original y values + 50 + rand(3)
+	<li>met5: y+30+r(3) - original y values + 30 + rand(3)
+	<li>met6: 10+r(1) - flat line 10 + rand(1)
+	<br><br>
+	</div>
+	</td>
+</tr>
+<tr id="example1">
+<td>Example 2</td> <td>
+	<b>Resource:</b> eolas:lz<br>
+	<b>Sampling:</b> 1 min<br>
+	<b>Time range:</b> 22 days<br>
+	<b>IOAPI result:</b> Out-of-bound <img src="css/images/icon_tsaa_normalbounds.jpg">, flat line <img src="css/images/icon_tsaa_variantandflaline.jpg"> anomalies,  causaly related <img src="css/images/icon_tsaa_granger.jpg"> and correlated <img src="css/images/icon_tsaa_related.jpg"> metrics.<br>
+	<b>Metrics:</b> 6<br><br>
+	<a href="#" class="description"><span id="accordionIcon">►</span>Screenshots</a>
+	<div style="display:none"><br>
+	<div class="fotorama" data-width="95%"
+	     data-ratio="800/400"
+		 data-nav="thumbs" align="center">
+	  <img src="css/images/example2-1.jpg">
+	  <img src="css/images/example2-2.jpg">
+	  <img src="css/images/example2-3.jpg">
+	  <img src="css/images/example2-4.jpg">
+	  <img src="css/images/example2-5.jpg">
+	  <img src="css/images/example2-6.jpg">
+	</div>
+	</div>
+	<br>
+	<a href="#" class="description"><span id="accordionIcon">►</span>Description of simulated metrics and anomalies</a>
+	<div class="content" style="display:none">
+	<br>
+	<b>Metrics Expressions:</b><br>
+	<li>met1: (r(10) > 8)?(y + r(2)):(y) - 80% of samples follow the original line y, 20% are randomized (y +r(2))
+	<li>met2: g(20) - the same as y delayed 20 minutes
+	<li>met3: y-10-r(10) - original y values - 10 - rand(10)
+	<li>met4: y*(2+r(1)) - original y values multiplied by (2+rand(1)) 
+	<li>met5: y+30+r(3) - original y values + 30 + rand(3)
+	<li>met6: (r(10)>5)?(m+1):(m-1) - random walk not related to original y values. m means previous value of metric, every next sample is +1 or -1 of previous value
+	<br><br><b>Anomaly period 1:</b><br>
+	<li>met1: (r(10) > 8)?(y - 20 - r(2)):(y-20) - 80% of samples are equal to original y value - 20, 20% are additionally randomized - rand(2)
+	<li>met2: g(50) - the same as y delayed 50 minutes
+	<li>met3: y+10+r(3) - original y values + 10 + rand(3)
+	<li>met4: y+50+r(3) - original y values + 50 + rand(3)
+	<li>met5: y+r(3) - original y values + rand(3)
+	<li>met6: 50 - flat line 50
+	<br><br><b>Anomaly period 2:</b><br>
+	<li>met1: (r(10) > 8)?(y + 20 - r(2)):(y+20)- 80% of samples are equal to original y value + 20, 20% are additionally randomized - rand(2)
+	<li>met2: g(20) - the same as y delayed 20 minutes
+	<li>met3: y-10+r(3) - original y values - 10 - rand(3)
+	<li>met4: y+50+r(3) - original y values + 50 + rand(3)
+	<li>met5: y+30+r(3) - original y values + 30 + rand(3)
+	<li>met6: 10+r(1) - flat line 10 + rand(1)
+	<br><br>
+	</div>
+	</td>
+</tr>
+</table>
+
+ </div>
+  <div id="tabs-2">
+  </div>
+  <div id="tabs-3">
+  
+ <div id="graphDiv1" style="display: inline-block; width:90%; height:300px;">
+</div>
+<div id="myLabelListDiv"></div>
+<p>
+
+<input type=checkbox onClick="toggleAllSeries(this)" checked>
+<label for="1"> Show/hide all</label>
+</p>
+  </div>
+  <div id="tabs-4">
+	  <a class="btn btn-default disabled" href="#" role="button" id="downloadCsv">
+	     Download CSV
+	  </a>
+	  <a class="btn btn-default disabled" href="#" role="button" id="downloadPiModel">
+	     Download PI model
+	  </a>
+	  <a class="btn btn-default disabled" href="#" role="button" id="downloadScript">
+	     Download script (all-in-one)
+	  </a>
+ </div>
+  <div id="tabs-5">
+  
+ <script>
+ $(function () {
+   $('[data-toggle="popover"]').popover({html:true});
+ })
+ </script>
+ 
+ SDGEN is a time series generator designed for IBM Operations Analytics Predictive Insights. You can specify any base KPI value in time you only want, just draw it on the line chart above - it will be your base 1-day time series. SDGEN will multiply this 1-day period n times, creating seasonal metric.
+ Base KPI can be also transformed using simple arithmetic expression defined in the Options tab, for example you can 'randomize' your line. Other KPIs can be defined using expressions that may refer to base KPI. Click on the context help in the 'Options' tab for details.<br>
+ <br>FIRST STEPS:<br>
+  Click on the examples in the 'Examples' tab to load predefined line and metric expressions or use the following steps to create your own simulation: 
+   <p>1. Draw a line in the chart above - it will be your 1-day time series.
+   <p>2. Preview <a tabindex="0" class="help" role="button" data-trigger="focus" data-toggle="popover" title="" data-content="<p>Application interpolates your line to 1, 2 or 5 minutes samples and multiply it by n days, starting 20 days ago by default. Both number of days and starting date can be customized in the 'Options' tab.<p> Metrics (KPIs) are generated, based on math expressions defined in the 'Options' tab. <p>Penultimate day is an 'anomaly day', generated by expressions in 'Anomaly Period 1' and 'Anomaly Period 2' (Options tab). Generated metrics will refere to your original line if 'y' varialbe will be used in the expression. Look at the examples to understand how it works.<p><b>Use the following variables, functions and operators inside the expressions:</b>
+   <li>y - y-axis value of your original line.
+   <li>g(n) - y value n minutes ago.
+   <li>m - last value of current metric. Useful for creating random walk time series like: (r(10)>5)?(m+1):(m-1).
+   <li>r(n) - rand function, ex. r(10) returns random number between 0 and 10
+   <li>use numbers, arythmetic operators (+ - * / and ** (exponentiation)), y, g(n) and r(n) functions to create expressions.
+   <li>?: - <a href='https://en.wikipedia.org/wiki/%3F'>conditional operator</a> is also supported.
+   <li>Expressions are validated with the following perl regex: /\A [\d\*\s\(\)rgym\-\+\?\:\>\<\/\.]+ \z/ix<br>
+   <p><p><b>Chart preview tips:</b><br>Select area in the chart preview ('Draw chart' tab) to zoom in. Double click on chart, to go back to initial view." data-original-title="How it works?">generated data</a> based on the line you drew, using 'Preview data' and 'Draw Chart' tabs. 
+   <p>3. Optionally change settings in the Options tab. You can add/delete/modify expressions that generate metrics and expressions that simulate anomalies.
+	   Every expression has to be defined in single line.
+	   Other options that can be customized are: start date, number of days and resource name.
+   <p>4. Download script using Download->Download script and execute it on IOAPI server.
+   <p>Script will automatically:
+   <li>create and configure PI topic
+   <li>deploy PI model
+   <li>extract generated data
+   <p><p>Generated data is compatible with <b>IBM Performance Management</b>, so if IOA Predictive Insights is configured to forward anomaly events to APM, you should see it in APM UI Event view, just make sure you have at least one agent connected with the same label as "Resource Name" defined in the Options tab. 
+   <p>Take a look at the demo video (outdated, <a tabindex="0" class="help" role="button" data-trigger="focus" data-toggle="popover" title="" data-content="<p>
+   [0.2] 28.07.2016<br>
+   Changes:
+   <li>flexible number of generated metrics - as many metrics as defined in 'Metrics Expressions' (Options tab).
+   <li>new Examples tab with examples (click on example row, to load example), PI screenshots and description of expressions.
+   <li>save configuration (line, metric expressions and other options) to JSON file.
+   <li>load configuration from JSON file.
+   <li>option to modify sample interval (with resampling animated on the chart).
+   <li>show/hide all metrics checkbox in chart preview tab.
+   <li>expressions extended with new 'm' variable that stores previous value of current metric (useful for creating non-seasonal 'random walk' KPI).
+   <li>g variable (previously stored y value from n minutes ago, where n was globally defined) changed to g(n) function that returns y value n minutes ago.
+   <li>two (8h long) anomaly periods during the penultimate day instead of one (24h).
+   <li>clear chart button just clears line on a chart, but preserves configuration.<br>
+
+   [0.1] - initial version
+   " data-original-title="Changelog">the following things changed</a> since it was recorded) to see basic features of SDGEN. Full screen and HD resolution recommended. 
+<p>
+	<iframe width="1125" height="720" align="center" src="//www.youtube.com/embed/pFZpnJpSTPg?vq=hd720" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div id="tabs-6">
+	<table width="90%" align="center">
+	  <tr>
+	    <td align="left" rowspan="4">
+		<a tabindex="0" class="help" role="button" data-trigger="focus" data-toggle="popover" title="" data-content="<p> Metrics are calculated using expressions defined below. Each line defines new metric. New metric may be based on the line drawn by you if you use 'y' variable in the expression. Look at the examples for details. <p><b>Expressions:</b>
+   <li>y - y-axis value of your original line.
+   <li>g(n) - y value n minutes ago.
+   <li>m - last value of current metric. Useful for creating random walk time series like: (r(10)>5)?(m+1):(m-1).
+   <li>r(n) - rand function, ex. rand(10) returns random number between 0 and 10.
+   <li>use numbers, arythmetic operators, y, g(n), m  and r(n) functions to create expressions.
+   <li>?: conditional operator is also supported.
+   <li>Expressions are validated with the following perl regex: /\A [\d\*\s\(\)rgym\-\+\?\:\>\<\/\.]+ \z/ix<br>" data-original-title="Metrics Expressions">help</a>
+		<div id="accordion"">
+			  <h3>Metrics Expressions</h3>
+			  <div>
+			  <textarea class="metrics" rows=6 cols=50 id="met">
+(r(10) > 8)?(y + r(3)):(y)
+g(40)
+y-10-r(10)
+y*(2+r(1))
+y+30+r(3)
+(r(10)>5)?(m+1):(m-1)</textarea>
+	         </div>	        
+	          <h3>Anomaly Period 1</h3>
+			  <div>
+	            <textarea class="metrics" rows=6 cols=50 id="met_an">
+(r(10) > 8)?(y + r(3)):(y)
+y-5
+y+10+r(3)
+50
+y+r(3)
+50</textarea>
+	         </div>	         
+	          <h3>Anomaly Period 2</h3>
+			  <div>
+	            <textarea class="metrics" rows=6 cols=50 id="met_an2">
+(r(10) > 8)?(y + r(3)):(y)
+y-5
+y+10+r(3)
+y*(2+r(1))
+y+r(3)
+30</textarea>
+	         </div>	
+		</td>
+	    <td align="center">
+		<table>
+		<tr>
+		<td align="right">Start date:</td><td><input type="text" class= "textbox" id="datepicker"></p></td>
+	 <tr>
+	    <td align="right">Number of days:</td><td><input type="text" class= "textbox"id="days" value="19"></p></td>
+	  </tr>
+	  <tr>
+      <td align="right">Sampling interval</td><td>
+      <select name="sampling" id="sampling" width=150>
+        <option value=60>1 minute</option>
+		<option value=120>2 minutes</option>
+        <option value=300 selected="selected">5 minutes</option>
+      </select>
+	  </td></tr>
+ 	 <tr>
+ 	    <td align="right">Resource name:</td><td><input type="text" class= "textbox" id="resource" value="eolas:LZ"></p></td>
+ 	  </tr>
+
+	</table>
+</table>
+
+
+  </div>
+  <div id="tabs-7">
+  <a class="btn btn-default" href="#" role="button" id="exportJSON">
+     Save configuration
+  </a>
+  <label class="btn btn-default btn-file">
+      Load Configuration <input id="file" type="file" style="display: none;">
+  </label>
+  <div id="configDiv">
+  </div>
+  </div>
+  <div id="tabs-8">
+  <p>Author: Rafał Szypułka (rafal.szypulka@pl.ibm.com)<p>Made with:
+  <a href="http://mojolicious.org">Mojolicious, </a> <a href="http://jquery.org">jQuery, </a>
+  <a href="http://jqueryui.com">jQuery UI</a>, 
+  <a href="http://getbootstrap.com">Bootstrap</a>, 
+  <a href="http://Dygraphs.com">Dygraphs</a>,  
+  <a href="http://spin.js.org">Spin.js</a>, 
+  <a href="http://momentjs.com">Moment.js</a>, 
+  <a href="http://d3js.org">D3</a>, <a href="https://github.com/oetiker/sourcey-buildpack">sourcey-buildpack</a>, 
+  <a href="http://fotorama.io">fotorama</a>
+  <br>
+  Idea and part of javascript code comes from <a href="https://github.com/mbonvini/TimeSeriesMaker">TimeSeriesMaker</a>
+  
+<p>LICENSE</p>
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) 2016 Rafał Szypułka</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+</div>
+  </div>
+</div>
+
+  </div>
+  <script src="js/rs_tsmk.js"></script>
+</body>
+
+</html>

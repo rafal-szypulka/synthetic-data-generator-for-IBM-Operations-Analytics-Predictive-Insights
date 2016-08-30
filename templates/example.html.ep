@@ -1,0 +1,6 @@
+% open(F,"<config/config.json");
+% while(<F>) {
+% chomp;
+<%== $_ %>
+% }
+% close F;

@@ -1,0 +1,8 @@
+% foreach my $column (@$graph) {
+%		if($column->[0] =~ /timestamp/) {
+<%= join(',', @$column) %>
+%	} else {
+% my $metrics = join(',', @$column[1..$#$column]);
+<%= $column->[0] . "000"%>,<%=$metrics%>
+%	}
+% }

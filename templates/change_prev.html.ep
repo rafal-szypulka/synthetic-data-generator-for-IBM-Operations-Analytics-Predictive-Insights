@@ -1,0 +1,8 @@
+<pre style="text-align: center">
+<%= @$graph %> rows generated.
+Select "Download -> Download CSV" to download full CSV file
+or
+"Download -> Download script" to download shell script that will do everything in one run!
+
+<%= $t %>
+</pre>

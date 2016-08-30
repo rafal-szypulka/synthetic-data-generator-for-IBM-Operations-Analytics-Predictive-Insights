@@ -1,0 +1,121 @@
+#!/bin/sh
+
+rm -rf /tmp/sdgen.workdir
+mkdir -p /tmp/sdgen.workdir/data
+$PI_HOME/bin/stop.sh -t=SDGEN
+$PI_HOME/bin/admin.sh cleanup -t=SDGEN
+echo "Creating topic SDGEN..."
+$PI_HOME/bin/admin.sh create_topic SDGEN
+echo "Setting properties for SDGEN topic..."
+$PI_HOME/bin/admin.sh set -t=SDGEN robustBounds.maxTrainingWindowDays 14
+$PI_HOME/bin/admin.sh set -t=SDGEN system.aggregation.interval 5
+$PI_HOME/bin/admin.sh set -t=SDGEN system.alarm.history.retention.days 180
+$PI_HOME/bin/admin.sh set -t=SDGEN variantInvariant.maxTrainingWindowDays 14
+echo "Writing pamodel file.."
+cat <<EOF > /tmp/sdgen.workdir/sdgen.pamodel
+<?xml version="1.0" encoding="UTF-8"?>
+<tasp:TopicConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tasp="http://www.ibm.com/tivoli/netcool/tasp">
+  <name>SDGEN</name>
+  <DataSourceInstance>
+    <name>ITM</name>
+    <model>
+      <name>ITM</name>
+      <groups>
+        <name>ResptimeGroup</name>
+        <timestampKey>
+          <name>Timestamp</name>
+          <enabled>true</enabled>
+          <dataType>Number</dataType>
+          <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.0">
+            <expression>
+              <expression></expression>
+            </expression>
+          </mapping>
+        </timestampKey>
+        <resourceKey>
+          <name>ResourceKey</name>
+          <enabled>true</enabled>
+          <dataType>String</dataType>
+          <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.1">
+            <expression>
+              <expression></expression>
+            </expression>
+          </mapping>
+        </resourceKey>
+        <attributes>
+          <name>Node</name>
+          <enabled>true</enabled>
+          <dataType>String</dataType>
+          <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.1">
+            <expression>
+              <expression></expression>
+            </expression>
+          </mapping>
+        </attributes>
+        <attributes>
+          <name>dataSourceType</name>
+          <dataType>String</dataType>
+          <mapping>
+            <expression>
+              <expression>'ITM'</expression>
+            </expression>
+          </mapping>
+        </attributes>
+% for (1..$$NumberOfMetrics) {
+	% my $entSource = $_ + 1;
+    <metrics>
+  <name>Met<%=$_%></name>
+<enabled>true</enabled>
+<dataType>Number</dataType>
+        <mapping source="#//@datasource.0/@model/@sources.0/@dataEntitySource.<%=$entSource%>">
+          <expression>
+            <expression></expression>
+          </expression>
+        </mapping>
+        <timeAggrType>Avg</timeAggrType>
+      </metrics>
+% }
+      </groups>
+      <sources>
+        <name>RespTime</name>
+        <DataEntitySource>
+          <name>timestamp</name>
+          <dataType>Number</dataType>
+        </DataEntitySource>
+        <DataEntitySource>
+          <name>Resource</name>
+          <dataType>String</dataType>
+        </DataEntitySource>
+% for (1..$$NumberOfMetrics) {
+   <DataEntitySource>
+     <name>met<%=$_%></name>
+      <dataType>Number</dataType>
+    </DataEntitySource>
+%}
+      </sources>
+      <filters/>
+    </model>
+    <config xsi:type="tasp:FileSystemConfig" timeFormat="1yyMMddHHmmssSSS">
+      <name>ITM</name>
+      <path>/tmp/sdgen.workdir/data</path>
+      <pattern>([a-zA-Z]\w*)_(\d{16})_(\d{16}).*\.csv</pattern>
+    </config>
+  </DataSourceInstance>
+</tasp:TopicConfig>	
+EOF
+echo "Deploying sdgen.pamodel..."
+$PI_HOME/bin/udm_converter.sh -deploy /tmp/sdgen.workdir/sdgen.pamodel
+echo "Starting SDGEN topic..."
+$PI_HOME/bin/start.sh -t=SDGEN
+cat <<EOF > /tmp/sdgen.workdir/data/RespTime_<%= ${start} . "_" . ${end} %>.csv
+% foreach my $column (@$graph) {
+%		if($column->[0] =~ /timestamp/) {
+<%= join(',', @$column) %>
+%	} else {
+% my $metrics = join(',', @$column[1..$#$column]);
+<%= $column->[0] . "000"%>,<%=$metrics%>
+%	}
+% }
+EOF
+echo "Running extractor instance for SDGEN topic..."
+$PI_HOME/bin/admin.sh run_extractor_instance -t=SDGEN -s=<%=${start_extractor} %> -e=<%= ${end_extractor} %> -m=EXTRACT
