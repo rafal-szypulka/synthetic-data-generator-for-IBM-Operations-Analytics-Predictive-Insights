@@ -308,7 +308,7 @@ table#example {
    <li>use numbers, arythmetic operators (+ - * / and ** (exponentiation)), y, g(n) and r(n) functions to create expressions.
    <li>?: - <a href='https://en.wikipedia.org/wiki/%3F'>conditional operator</a> is also supported.
    <li>Expressions are validated with the following perl regex: /\A [\d\*\s\(\)rgym\-\+\?\:\>\<\/\.]+ \z/ix<br>
-   <p><p><b>Chart preview tips:</b><br>Select area in the chart preview ('Draw chart' tab) to zoom in. Double click on chart, to go back to initial view." data-original-title="How it works?">generated data</a> based on the line you drew, using 'Preview data' and 'Draw Chart' tabs. 
+   <p><p><b>Chart preview tips:</b><br>Select area in the chart preview ('Draw chart' tab) to zoom in. Double click on chart, to go back to initial view." data-original-title="How it works?">generated data</a> based on the line you drew, using 'Preview data' and 'Preview chart' tabs. 
    <p>3. Optionally change settings in the Options tab. You can add/delete/modify expressions that generate metrics and expressions that simulate anomalies.
 	   Every expression has to be defined in single line.
 	   Other options that can be customized are: start date, number of days and resource name.
