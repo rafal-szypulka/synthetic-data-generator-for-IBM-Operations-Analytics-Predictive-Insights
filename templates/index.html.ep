@@ -318,24 +318,9 @@ table#example {
    <li>deploy PI model
    <li>extract generated data
    <p><p>Generated data is compatible with <b>IBM Performance Management</b>, so if IOA Predictive Insights is configured to forward anomaly events to APM, you should see it in APM UI Event view, just make sure you have at least one agent connected with the same label as "Resource Name" defined in the Options tab. 
-   <p>Take a look at the demo video (outdated, <a tabindex="0" class="help" role="button" data-trigger="focus" data-toggle="popover" title="" data-content="<p>
-   [0.2] 28.07.2016<br>
-   Changes:
-   <li>flexible number of generated metrics - as many metrics as defined in 'Metrics Expressions' (Options tab).
-   <li>new Examples tab with examples (click on example row, to load example), PI screenshots and description of expressions.
-   <li>save configuration (line, metric expressions and other options) to JSON file.
-   <li>load configuration from JSON file.
-   <li>option to modify sample interval (with resampling animated on the chart).
-   <li>show/hide all metrics checkbox in chart preview tab.
-   <li>expressions extended with new 'm' variable that stores previous value of current metric (useful for creating non-seasonal 'random walk' KPI).
-   <li>g variable (previously stored y value from n minutes ago, where n was globally defined) changed to g(n) function that returns y value n minutes ago.
-   <li>two (8h long) anomaly periods during the penultimate day instead of one (24h).
-   <li>clear chart button just clears line on a chart, but preserves configuration.<br>
-
-   [0.1] - initial version
-   " data-original-title="Changelog">the following things changed</a> since it was recorded) to see basic features of SDGEN. Full screen and HD resolution recommended. 
+   <p>Take a look at the demo video to see basic features of SDGEN. Full screen and HD resolution recommended. 
 <p>
-	<iframe width="1125" height="720" align="center" src="//www.youtube.com/embed/pFZpnJpSTPg?vq=hd720" frameborder="0" allowfullscreen></iframe>
+	<iframe width="1125" height="720" align="center" src="//www.youtube.com/embed/rtTp1uiEbPA?vq=hd720" frameborder="0" allowfullscreen></iframe>
   </div>
   <div id="tabs-6">
 	<table width="90%" align="center">
