@@ -1,5 +1,7 @@
 # Synthetic Data Generator for IBM Operations Analytics Predictive Insights
 
+[SDGEN online](http://ibm.biz/sdgen-pi)
+
 LICENSE
 
 Idea and part of the javascript code comes from [TimeSeriesMaker](https://github.com/mbonvini/TimeSeriesMaker).
