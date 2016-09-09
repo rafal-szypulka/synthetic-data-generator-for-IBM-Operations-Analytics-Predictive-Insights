@@ -406,7 +406,7 @@ y+r(3)
   </div>
   <div id="tabs-8">
   <p>Author: Rafał Szypułka (rafal.szypulka@pl.ibm.com)<p>Made with:
-  <a class="help" href="http://mojolicious.org">Mojolicious, </a> <a href="http://jquery.org">jQuery, </a>
+  <a class="help" href="http://mojolicious.org">Mojolicious, </a> <a class-"help" href="http://jquery.org">jQuery, </a>
   <a class="help" href="http://jqueryui.com">jQuery UI</a>, 
   <a class="help" href="http://getbootstrap.com">Bootstrap</a>, 
   <a class="help" href="http://Dygraphs.com">Dygraphs</a>,  
