@@ -10,7 +10,7 @@ use Math::Interpolate qw(linear_interpolate);
 
 
 plugin 'RenderFile';
-plugin AccessLog => {log => 'log/access.log'};
+#plugin AccessLog => {log => 'log/access.log'};
 
 my ( $month, $day, $year );
 
