@@ -2,7 +2,7 @@
 
 [SDGEN online](http://ibm.biz/sdgen-pi)
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/rafal-szypulka/synthetic-data-generator-for-IBM-Operations-Analytics-Predictive-Insights/)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/rafal-szypulka/synthetic-data-generator-for-IBM-Operations-Analytics-Predictive-Insights.git)
 
 LICENSE
 
